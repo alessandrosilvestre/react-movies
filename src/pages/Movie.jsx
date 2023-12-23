@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   BsGraphUp,
   BsWallet2,
@@ -9,6 +9,8 @@ import {
 
 
 import MovieCard from "../components/MovieCard";
+import * as React from 'react';
+import Button from '@mui/material/Button';
 
 
 import "./Movie.css";
@@ -19,6 +21,7 @@ const apiKey = import.meta.env.VITE_API_KEY;
 const Movie = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
+  const navigate = useNavigate();
 
   const getMovie = async (url) => {
     const res = await fetch(url);
@@ -39,6 +42,10 @@ const Movie = () => {
     getMovie(movieUrl);
   }, []);
 
+  const handleBackToHome = () => {
+    navigate("/"); 
+  };
+
   
   return (
     <div className="movie-page">
@@ -48,16 +55,11 @@ const Movie = () => {
           <p className="tagline">{movie.tagline}</p>
           <div className="info">
             <h3>
-              <BsWallet2 /> Orçamento:
+              <BsWallet2 /> Lançamento:
             </h3>
-            <p>{formatCurrency(movie.budget)}</p>
+            <p>{formatCurrency(movie.release_date)}</p>
           </div>
-          <div className="info">
-            <h3>
-              <BsGraphUp /> Receita:
-            </h3>
-            <p>{formatCurrency(movie.revenue)}</p>
-          </div>
+          
           <div className="info">
             <h3>
               <BsHourglassSplit /> Duração:
@@ -69,8 +71,11 @@ const Movie = () => {
               <BsFillFileEarmarkTextFill /> Descrição:
             </h3>
             <p>{movie.overview}</p>
-          </div>       
-          <BackButton />     
+          </div>           
+          <Button variant="contained" onClick={handleBackToHome}>
+            Voltar para Home
+          </Button>
+               
         </>
       )}
     </div>
